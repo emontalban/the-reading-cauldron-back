@@ -74,3 +74,37 @@ def create_book(data):
     con.close()
 
     return book_id
+
+def get_book_by_id(id):
+    con = get_db_connection()
+
+    if con is None:
+        return None
+    
+    cursor = con.cursor(dictionary=True)
+    
+    sql = """
+        SELECT
+            book_id,
+            book_title,
+            book_author,
+            book_isbn,
+            book_description,
+            book_pages,
+            book_language,
+            book_category,
+            book_cover_url,
+            book_created_at
+        FROM books
+        WHERE book_id = %s
+    """
+
+    cursor.execute(sql,(id,))
+
+    book = cursor.fetchone()
+
+    cursor.close()
+    con.close()
+
+    return book
+

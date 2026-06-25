@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from queries.books_queries import get_books, create_book
+from queries.books_queries import get_books, create_book, get_book_by_id
 
 def register_book_routes(app):
     @app.route("/books", methods=["GET"])
@@ -37,4 +37,17 @@ def register_book_routes(app):
             "message": "Libro creado correctamente",
             "book_id": book_id
         }), 201
+    
+    @app.route("/books/<int:id>", methods=["GET"])
+    def get_book_by_id_route(id):
+        book = get_book_by_id(id)
+
+        if book is None:
+            return jsonify({
+                "status": "error",
+                "message": "Libro no encontrado"
+            }),404
+        
+        return jsonify(book)
+    
             
