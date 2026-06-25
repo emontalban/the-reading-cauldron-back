@@ -108,3 +108,46 @@ def get_book_by_id(id):
 
     return book
 
+def update_book(id, data):
+    con = get_db_connection()
+
+    if con is None:
+        return False
+    
+    cursor = con.cursor()
+    sql = """
+        UPDATE books
+        SET
+            book_title = %s,
+            book_author = %s,
+            book_isbn = %s,
+            book_description = %s,
+            book_pages = %s,
+            book_language = %s,
+            book_category = %s,
+            book_cover_url = %s
+        WHERE book_id = %s
+    """
+
+    values = (
+        data.get("book_title"),
+        data.get("book_author"),
+        data.get("book_isbn"),
+        data.get("book_description"),
+        data.get("book_pages"),
+        data.get("book_language"),
+        data.get("book_category"),
+        data.get("book_cover_url"),
+        id
+    )
+
+    cursor.execute(sql, values)
+
+    con.commit()
+
+    cursor.close()
+
+    con.close()
+
+    return True
+

@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from queries.books_queries import get_books, create_book, get_book_by_id
+from queries.books_queries import get_books, create_book, get_book_by_id, update_book
 
 def register_book_routes(app):
     @app.route("/books", methods=["GET"])
@@ -50,4 +50,41 @@ def register_book_routes(app):
         
         return jsonify(book)
     
-            
+
+    @app.route("/books/<int:id>", methods=["PUT"])
+    def update_book_route(id):
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "status": "error",
+                "message": "No se recibieron datos"
+            }), 400
+
+        if not data.get("book_title") or not data.get("book_author"):
+            return jsonify({
+                "status": "error",
+                "message": "El título y el autor son obligatorios"
+            }), 400
+
+        book = get_book_by_id(id)
+
+        if book is None:
+            return jsonify({
+                "status": "error",
+                "message": "Libro no encontrado"
+            }), 404
+
+        updated = update_book(id, data)
+
+        if not updated:
+            return jsonify({
+                "status": "error",
+                "message": "No se pudo actualizar el libro"
+            }), 500
+
+        return jsonify({
+            "status": "ok",
+            "message": "Libro actualizado correctamente",
+            "book_id": id
+        })
