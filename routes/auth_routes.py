@@ -6,6 +6,7 @@ from flask import jsonify, request
 from werkzeug.security import check_password_hash
 
 from queries.users_queries import get_user_by_email
+from helpers.auth_helpers import get_current_user_from_token
 
 def register_auth_routes(app):
     @app.route("/login", methods=["POST"])
@@ -65,5 +66,24 @@ def register_auth_routes(app):
                 "user_id": user["user_id"],
                 "user_name": user["user_name"],
                 "user_email": user["user_email"]
+            }
+        })
+    
+
+
+    @app.route("/profile", methods=["GET"])
+    def profile_route():
+        current_user, error_response, status_code = get_current_user_from_token()
+
+        if error_response:
+            return jsonify(error_response), status_code
+
+        return jsonify({
+            "status": "ok",
+            "message": "Token válido",
+            "user": {
+                "user_id": current_user["user_id"],
+                "user_name": current_user["user_name"],
+                "user_email": current_user["user_email"]
             }
         })
