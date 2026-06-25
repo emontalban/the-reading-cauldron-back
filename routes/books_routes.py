@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from queries.books_queries import get_books, create_book, get_book_by_id, update_book
+from queries.books_queries import get_books, create_book, get_book_by_id, update_book, delete_book
 
 def register_book_routes(app):
     @app.route("/books", methods=["GET"])
@@ -88,3 +88,27 @@ def register_book_routes(app):
             "message": "Libro actualizado correctamente",
             "book_id": id
         })
+    
+    @app.route("/books/<int:id>",  methods=["DELETE"])
+    def  delete_book_route(id):
+        book = get_book_by_id(id)
+
+        if book is None:
+            return jsonify({
+                "status": "error",
+                "message" : "Libro no encontrado"
+            }), 404
+        
+        deleted = delete_book(id)
+
+        if not deleted:
+            return jsonify({
+                "status": "error",
+                "message": "No se pudo eliminar el libro"
+            }), 500
+
+        return jsonify({
+            "status": "ok",
+            "message": "Libro eliminado correctamente",
+            "book_id": id
+        }) 

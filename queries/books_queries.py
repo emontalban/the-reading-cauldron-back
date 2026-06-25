@@ -151,3 +151,27 @@ def update_book(id, data):
 
     return True
 
+
+def delete_book(id):
+    con = get_db_connection()
+
+    if con is None:
+        return False
+
+    cursor = con.cursor()
+
+    sql = """
+        DELETE FROM books
+        WHERE book_id = %s
+    """
+
+    cursor.execute(sql, (id,))
+
+    con.commit()
+
+    deleted_rows = cursor.rowcount
+
+    cursor.close()
+    con.close()
+
+    return deleted_rows > 0
