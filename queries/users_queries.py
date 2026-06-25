@@ -63,3 +63,30 @@ def create_user(data):
     con.close()
 
     return user_id
+
+
+def get_user_by_email(user_email):
+    con = get_db_connection()
+
+    if con is None:
+        return None
+    cursor = con.cursor(dictionary=True)
+
+    sql = """
+        SELECT
+           user_id,
+           user_name,
+           user_email,
+           user_password_hash
+        FROM users
+        WHERE user_email = %s
+
+    """
+    cursor.execute(sql, (user_email,))
+
+    user = cursor.fetchone()
+
+    cursor.close()
+    con.close()
+
+    return user
