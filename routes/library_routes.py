@@ -3,6 +3,7 @@ from flask import jsonify, request
 from helpers.auth_helpers import get_current_user_from_token
 from queries.library_queries import get_library_by_user_id, add_book_to_library, get_library_item_by_id_and_user_id, update_library, delete_library
 from queries.books_queries import get_book_by_id
+from helpers.library_validations import validate_library_data
 
 
 def register_library_routes(app):
@@ -37,6 +38,11 @@ def register_library_routes(app):
                 "status": "error",
                 "message": "El ID del libro es necesrio"
             }), 400
+        
+        validation_error = validate_library_data(data, require_book_id=True)
+
+        if validation_error:
+            return jsonify(validation_error), 400
 
         book = get_book_by_id(data.get("library_book_id"))
 
@@ -73,6 +79,11 @@ def register_library_routes(app):
                 "status": "error",
                 "message": "No se recibieror datos"
             }), 400
+        
+        validation_error = validate_library_data(data)
+
+        if validation_error:
+            return jsonify(validation_error), 400
         
         library_item = get_library_item_by_id_and_user_id(library_id, current_user["user_id"])
         if library_item is None:

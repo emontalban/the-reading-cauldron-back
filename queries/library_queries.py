@@ -178,11 +178,10 @@ def update_library(library_id,user_id, data):
     )
     cursor.execute(sql, values)
     con.commit()
-    update_rows = cursor.rowcount
 
     cursor.close()
     con.close()
-    return update_rows > 0
+    return True
 
 def delete_library(library_id, user_id):
     con = get_db_connection()
