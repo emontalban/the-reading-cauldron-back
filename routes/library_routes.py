@@ -1,7 +1,7 @@
 from flask import jsonify, request
 
 from helpers.auth_helpers import get_current_user_from_token
-from queries.library_queries import get_library_by_user_id, add_book_to_library, get_library_item_by_id_and_user_id, update_library
+from queries.library_queries import get_library_by_user_id, add_book_to_library, get_library_item_by_id_and_user_id, update_library, delete_library
 from queries.books_queries import get_book_by_id
 
 
@@ -79,10 +79,46 @@ def register_library_routes(app):
             return jsonify({
                 "status": "error",
                 "message": "No se puedo acutalizar"
+            }), 404
+        
+        updated = update_library(library_id,current_user["user_id"],data)
+        if not updated:
+            return jsonify({
+                "status": "error",
+                "message": "No se pudo actualizar el elemento de biblioteca"
             }), 500
         
         return jsonify({
             "status": "ok",
             "message": "Elemento de biblioteca actualizado correctamente",
+            "library_id": library_id
+        })
+    
+    @app.route("/library/<int:library_id>", methods=["DELETE"])
+    def delete_library_route(library_id):
+        current_user, error_response, status_code = get_current_user_from_token()
+        
+        if error_response:
+            return jsonify(error_response), status_code
+        
+        library_item = get_library_item_by_id_and_user_id(library_id,current_user["user_id"])
+
+        if library_item is None:
+            return jsonify({ 
+                "status": "error",
+                "message": "Elemento no encontrado"
+            }),404
+        
+        deleted = delete_library(library_id, current_user["user_id"])
+
+        if not deleted:
+            return jsonify({
+                "status" :"error",
+                "message" : "Error a eliminar el elemento"
+            }),500
+        
+        return jsonify({
+            "status" : "ok",
+            "Message": "Libro eliminado correctamente de la biblioteca",
             "library_id": library_id
         })

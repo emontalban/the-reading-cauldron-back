@@ -183,3 +183,22 @@ def update_library(library_id,user_id, data):
     cursor.close()
     con.close()
     return update_rows > 0
+
+def delete_library(library_id, user_id):
+    con = get_db_connection()
+
+    if con is None:
+        return False
+    
+    cursor = con.cursor()
+    sql = "DELETE FROM library WHERE library_id = %s AND library_user_id = %s"
+
+    cursor.execute(sql, (library_id, user_id))
+    con.commit()
+
+    delete_rows = cursor.rowcount
+
+    cursor.close()
+    con.close()
+
+    return delete_rows >0
