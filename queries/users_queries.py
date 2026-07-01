@@ -90,3 +90,31 @@ def get_user_by_email(user_email):
     con.close()
 
     return user
+
+def get_existing_user(data):
+    con = get_db_connection()
+
+    if con is None:
+        return None
+    cursor = con.cursor(dictionary=True)
+    sql = """
+        SELECT
+            user_id,
+            user_name,
+            user_email
+        FROM users
+        WHERE user_email = %s
+        OR user_name = %s
+        LIMIT 1
+    """
+
+    values = (
+        data.get("user_email"),
+        data.get("user_name")
+    )
+    cursor.execute(sql, values)
+    user = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    return user

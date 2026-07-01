@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from queries.users_queries import get_users, create_user
+from queries.users_queries import get_users, create_user, get_existing_user
 
 
 def register_user_routes(app):
@@ -25,6 +25,19 @@ def register_user_routes(app):
                 "status": "error",
                 "message": "El nombre, email y password son obligatorios"
             }), 400
+        
+        existing_user = get_existing_user(data)
+
+        if existing_user["user_email"] == data.get("user_email"):
+            return jsonify({
+                "status": "error",
+                "message" : "Este email ya esta registrado"
+            }),409
+        if existing_user["user_name"] == data.get("user_name"):
+            return jsonify({
+                "status" : "error",
+                "message" : "Este nombre ya existe"
+            }), 409
 
         user_id = create_user(data)
 
