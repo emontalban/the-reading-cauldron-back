@@ -53,7 +53,13 @@ def register_library_routes(app):
             }), 404
 
         library_id = add_book_to_library(current_user["user_id"], data)
-
+        
+        if library_id == "duplicate":
+            return jsonify({
+                "status": "error",
+                "message": "Este libro ya está en tu biblioteca con ese formato"
+            }), 409
+        
         if library_id is None:
             return jsonify({
                 "status": "error",

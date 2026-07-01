@@ -1,5 +1,5 @@
 from database.connection import get_db_connection
-
+from mysql.connector import Error
 
 
 def get_library_by_user_id(user_id):
@@ -92,16 +92,29 @@ def add_book_to_library(user_id, data):
         data.get("library_ownership", "propio")
     )
 
-    cursor.execute(sql, values)
+    try:
+        cursor.execute(sql, values)
 
-    con.commit()
+        con.commit()
 
-    library_id = cursor.lastrowid
+        library_id = cursor.lastrowid
 
-    cursor.close()
-    con.close()
+        cursor.close()
+        con.close()
 
-    return library_id
+        return library_id
+    
+    except Error as error:
+        print(f"Error añadiendo libro a la biblioteca: {error}")
+
+        cursor.close()
+        con.close()
+
+        if error.errno == 1062:
+            return "duplicate"
+
+        return None
+
 
 def get_library_item_by_id_and_user_id(library_id, user_id):
     con = get_db_connection()

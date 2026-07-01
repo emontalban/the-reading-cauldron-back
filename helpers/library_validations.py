@@ -27,7 +27,7 @@ def is_valid_date(date_value):
         return True
     
     try:
-        datetime.strptime(date_value, "%d-%m-%Y")
+        datetime.strptime(date_value, "%Y-%m-%d")
         return True
     except ValueError:
         return False
@@ -76,7 +76,7 @@ def validate_library_data(data, require_book_id=False):
     if not is_valid_date(library_start_date):
         return{
             "status": "error",
-            "message": "la fecha de inicio debe tener formato DD-MM-YY"
+            "message": "la fecha de inicio debe tener formato YY-MM-DD"
         }
     
     library_favorite = data.get("library_favorite")
