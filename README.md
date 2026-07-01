@@ -14,40 +14,75 @@ El usuario podrá añadir libros, editarlos, eliminarlos, marcar su estado de le
 
 * Python
 * Flask
+* Flask-CORS
 * MySQL
+* PyJWT
 * REST API
 * Git
 * GitHub
+## Estructura del proyecto
 
-## Funcionalidades principales del backend
-
-* Registro de usuarios
-* Inicio de sesión
-* Gestión de libros
-* Crear libros
-* Ver libros
-* Editar libros
-* Eliminar libros
-* Conexión con base de datos MySQL
-
-## Estructura inicial del proyecto
-
-```txt
+```text
 the-reading-cauldron-backend/
 │
 ├── app.py
+├── README.md
 ├── requirements.txt
-├── .gitignore
 ├── .env
-│
-├── routes/
-│   └── books_routes.py
+├── .gitignore
 │
 ├── database/
-│   └── connection.py
+│   ├── __init__.py
+│   ├── connection.py
+│   └── schema.sql
 │
-└── README.md
+├── routes/
+│   ├── __init__.py
+│   ├── home_routes.py
+│   ├── db_routes.py
+│   ├── books_routes.py
+│   ├── user_routes.py
+│   ├── auth_routes.py
+│   └── library_routes.py
+│
+├── queries/
+│   ├── __init__.py
+│   ├── db_queries.py
+│   ├── books_queries.py
+│   ├── users_queries.py
+│   └── library_queries.py
+│
+├── helpers/
+│   ├── __init__.py
+│   ├── auth_helpers.py
+│   └── library_validations.py
+│
+└── docs/
+    └── API.md
 ```
+## Funcionalidades principales del backend
+
+* Conexion con base de datos MySQL
+* Registro de usuarios
+* Login con JWT
+* Inicio de sesión
+* CRUD de libros
+* CRUD de biblioteca personal
+* Validaciones para los datos de la biblioteca
+
+## Base de datos
+
+La base de datos utilizada es:
+
+the_reading_cauldron_db
+
+Tablas principales:
+
+- users
+- books
+- library
+
+La tabla `library` conecta usuarios con libros y guarda información personal de lectura, como estado, formato, páginas leídas, valoración, notas y propiedad del libro.
 
 ## Instalación
 
