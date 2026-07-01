@@ -38,8 +38,16 @@ def register_user_routes(app):
                 "status" : "error",
                 "message" : "Este nombre ya existe"
             }), 409
+        
+
+
 
         user_id = create_user(data)
+        if user_id == "duplicate":
+            return jsonify({
+                "status": "error",
+                "message": "Este usuario ya existe"
+            }), 409
 
         if user_id is None:
             return jsonify({

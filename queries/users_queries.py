@@ -1,6 +1,6 @@
 from database.connection import get_db_connection
 from werkzeug.security import generate_password_hash
-
+from mysql.connector import Error
 
 def get_users():
     con = get_db_connection()
@@ -53,16 +53,29 @@ def create_user(data):
         password_hash
     )
 
-    cursor.execute(sql, values)
+    try:
 
-    con.commit()
+        cursor.execute(sql, values)
 
-    user_id = cursor.lastrowid
+        con.commit()
 
-    cursor.close()
-    con.close()
+        user_id = cursor.lastrowid
 
-    return user_id
+        cursor.close()
+        con.close()
+
+        return user_id
+    except Error as error:
+        print (f"Error al crear usuario: {error}")
+
+        cursor.close()
+        con.close()
+
+        if error.errno == 1062:
+            return "duplicate"
+        
+        return None
+
 
 
 def get_user_by_email(user_email):
