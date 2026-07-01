@@ -53,10 +53,14 @@ def create_book(data):
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
 
     """
+    book_isbn = data.get("book_isbn")
+
+    if book_isbn == "":
+        book_isbn = None
     values = (
         data.get("book_title"),
         data.get("book_author"),
-        data.get("book_isbn"),
+        book_isbn,
         data.get("book_description"),
         data.get("book_pages"),
         data.get("book_language"),
@@ -175,3 +179,60 @@ def delete_book(id):
     con.close()
 
     return deleted_rows > 0
+
+def get_existing_book(data):
+    con = get_db_connection()
+
+    cursor = con.cursor(dictionary=True)
+
+    book_isbn = data.get("book_isbn")
+    book_title = data.get("book_title")
+    book_author = data.get("book_author")
+    book_language = data.get("book_language")
+
+    if book_isbn == "":
+        book_isbn = None
+
+    if book_isbn is not None:
+        sql = """
+            SELECT
+                book_id,
+                book_title,
+                book_author,
+                book_isbn,
+                book_language
+            FROM books
+            WHERE book_isbn = %s
+
+        """
+
+        cursor.execute(sql, (book_isbn,))
+
+    else:
+        sql = """
+            SELECT
+                book_id,
+                book_title,
+                book_author,
+                book_isbn,
+                book_language
+            FROM books
+            WHERE LOWER(book_title) = LOWER(%s)
+            AND LOWER(book_author) = LOWER(%s)
+            AND LOWER(COALESCE(book_language, '')) = LOWER(%s)
+            LIMIT 1
+        """
+
+        cursor.execute(sql, (
+            book_title,
+            book_author,
+            book_language or ""
+        ))
+
+    existing_book = cursor.fetchone()
+
+    cursor.close()
+    con.close()
+
+    return existing_book
+

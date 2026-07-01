@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `books` (
     `book_id` INT AUTO_INCREMENT PRIMARY KEY,
     `book_title` VARCHAR(150) NOT NULL,
     `book_author` VARCHAR(120) NOT NULL,
-    `book_isbn` VARCHAR(30),
+    `book_isbn` VARCHAR(30) UNIQUE,
     `book_description` TEXT,
     `book_pages` INT,
     `book_language` VARCHAR(50),
