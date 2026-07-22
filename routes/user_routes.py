@@ -28,21 +28,21 @@ def register_user_routes(app):
         
         existing_user = get_existing_user(data)
 
-        if existing_user["user_email"] == data.get("user_email"):
-            return jsonify({
-                "status": "error",
-                "message" : "Este email ya esta registrado"
-            }),409
-        if existing_user["user_name"] == data.get("user_name"):
-            return jsonify({
-                "status" : "error",
-                "message" : "Este nombre ya existe"
-            }), 409
-        
+        if existing_user is not None:
+            if existing_user["user_email"] == data.get("user_email"):
+                return jsonify({
+                    "status": "error",
+                    "message": "Este email ya está registrado"
+                }), 409
 
-
+            if existing_user["user_name"] == data.get("user_name"):
+                return jsonify({
+                    "status": "error",
+                    "message": "Este nombre de usuario ya está en uso"
+                }), 409
 
         user_id = create_user(data)
+
         if user_id == "duplicate":
             return jsonify({
                 "status": "error",
@@ -60,3 +60,7 @@ def register_user_routes(app):
             "message": "Usuario creado correctamente",
             "user_id": user_id
         }), 201
+
+
+
+
