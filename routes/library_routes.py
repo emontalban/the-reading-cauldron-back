@@ -77,7 +77,7 @@ def register_library_routes(app):
         current_user, error_response, status_code = get_current_user_from_token()
 
         if error_response:
-            return jsonify(error_response, status_code)
+            return jsonify(error_response), status_code
         
         data = request.get_json()
         if not data:

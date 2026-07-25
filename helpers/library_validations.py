@@ -64,7 +64,7 @@ def validate_library_data(data, require_book_id=False):
                 "status" : "error",
                 "message" : "Debe de ser un numero entre 0 y 5"
             }
-    library_current_page = data.get("library_currente_page")   
+    library_current_page = data.get("library_current_page")   
     if library_current_page is not None:
         if type(library_current_page)is not int or library_current_page < 0:
             return{
