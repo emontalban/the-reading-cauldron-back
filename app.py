@@ -4,11 +4,10 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import truststore
 
-# Localizamos el .env a partir de app.py, no del directorio de la terminal.
+
 BACKEND_DIR = Path(__file__).resolve().parent
 load_dotenv(BACKEND_DIR / ".env")
 
-# requests podrá validar HTTPS con las autoridades de confianza de Windows.
 truststore.inject_into_ssl()
 
 from routes.home_routes import register_home_routes
