@@ -235,17 +235,17 @@ def get_existing_library_book(user_id, book_id):
     sql = """
         SELECT
             library_id,
-            user_id,
-            book_id
+            library_user_id,
+            library_book_id
         FROM library
-        WHERE user_id = %s AND book_id = %s
+        WHERE library_user_id = %s AND library_book_id = %s
     """
 
     cursor.execute(sql, (user_id, book_id))
 
-    library_book = cursor.fetchone()
+    existing_library_book = cursor.fetchone()
 
     cursor.close()
     con.close()
 
-    return library_book
+    return existing_library_book

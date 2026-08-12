@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from queries.books_queries import get_books, create_book, get_book_by_id, update_book, delete_book, get_existing_book
+from queries.books_queries import get_books, create_book, get_book_by_id, update_book, delete_book
 
 def register_book_routes(app):
     @app.route("/books", methods=["GET"])
