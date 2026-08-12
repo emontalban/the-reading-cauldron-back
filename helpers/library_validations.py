@@ -18,7 +18,6 @@ VALID_LIBRARY_FORMATS = [
 VALID_LIBRARY_OWNERSHIPS = [
     "propio",
     "prestado",
-    "biblioteca",
     "no_lo_tengo"
 ]
 
@@ -76,7 +75,7 @@ def validate_library_data(data, require_book_id=False):
     if not is_valid_date(library_start_date):
         return{
             "status": "error",
-            "message": "la fecha de inicio debe tener formato YY-MM-DD"
+            "message": "la fecha de inicio debe tener formato YYYY-MM-DD"
         }
     
     library_favorite = data.get("library_favorite")
@@ -91,6 +90,12 @@ def validate_library_data(data, require_book_id=False):
         return {
             "status": "error",
             "message": "Tipo de propiedad no válido"
+        }
+    library_finish_date = data.get("library_finish_date")
+    if not is_valid_date(library_finish_date):
+        return {
+            "status": "error",
+            "message": "La fecha de finalización debe tener formato YYYY-MM-DD"
         }
 
     return None

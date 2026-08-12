@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS `library` (
     `library_ownership` ENUM(
         'propio',
         'prestado',
-        'biblioteca',
         'no_lo_tengo'
     ) DEFAULT 'propio',
     `library_created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

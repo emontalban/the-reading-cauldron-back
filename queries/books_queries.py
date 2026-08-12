@@ -39,6 +39,19 @@ def create_book(data):
     
     cursor = con.cursor()
 
+    book_isbn = data.get("book_isbn")
+
+    if book_isbn == "":
+        book_isbn = None
+
+    if book_isbn is not None:
+        existing_book = get_book_by_isbn(con, book_isbn)
+
+        if existing_book:
+            cursor.close()
+            con.close()
+            return existing_book["book_id"]
+
     sql = """
         INSERT INTO books (
                 book_title,
@@ -180,59 +193,79 @@ def delete_book(id):
 
     return deleted_rows > 0
 
-def get_existing_book(data):
+
     con = get_db_connection()
 
-    cursor = con.cursor(dictionary=True)
+    if con is None:
+        return None
+
+    cursor = con.cursor()
 
     book_isbn = data.get("book_isbn")
-    book_title = data.get("book_title")
-    book_author = data.get("book_author")
-    book_language = data.get("book_language")
 
     if book_isbn == "":
         book_isbn = None
 
     if book_isbn is not None:
-        sql = """
-            SELECT
-                book_id,
-                book_title,
-                book_author,
-                book_isbn,
-                book_language
-            FROM books
-            WHERE book_isbn = %s
+        existing_book = get_book_by_isbn(con, book_isbn)
 
-        """
+        if existing_book:
+            cursor.close()
+            con.close()
+            return existing_book["book_id"]
 
-        cursor.execute(sql, (book_isbn,))
-
-    else:
-        sql = """
-            SELECT
-                book_id,
-                book_title,
-                book_author,
-                book_isbn,
-                book_language
-            FROM books
-            WHERE LOWER(book_title) = LOWER(%s)
-            AND LOWER(book_author) = LOWER(%s)
-            AND LOWER(COALESCE(book_language, '')) = LOWER(%s)
-            LIMIT 1
-        """
-
-        cursor.execute(sql, (
+    sql = """
+        INSERT INTO books (
             book_title,
             book_author,
-            book_language or ""
-        ))
+            book_isbn,
+            book_description,
+            book_pages,
+            book_language,
+            book_category,
+            book_cover_url
+        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """
 
-    existing_book = cursor.fetchone()
+    values = (
+        data.get("book_title"),
+        data.get("book_author"),
+        book_isbn,
+        data.get("book_description"),
+        data.get("book_pages"),
+        data.get("book_language"),
+        data.get("book_category"),
+        data.get("book_cover_url"),
+    )
+
+    cursor.execute(sql, values)
+
+    con.commit()
+
+    book_id = cursor.lastrowid
 
     cursor.close()
     con.close()
 
-    return existing_book
+    return book_id
+
+def get_book_by_isbn(con, book_isbn):
+    cursor = con.cursor(dictionary=True)
+
+    sql = """
+        SELECT book_id
+        FROM books
+        WHERE book_isbn = %s
+    """
+
+    cursor.execute(sql, (book_isbn,))
+    book = cursor.fetchone()
+
+    cursor.close()
+
+    return book
+
+
+
 

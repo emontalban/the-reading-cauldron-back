@@ -12,19 +12,19 @@ CREATE TABLE IF NOT EXISTS `users` (
     `user_created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS `books` (
-    `book_id` INT AUTO_INCREMENT PRIMARY KEY,
-    `book_title` VARCHAR(150) NOT NULL,
-    `book_author` VARCHAR(120) NOT NULL,
-    `book_isbn` VARCHAR(30) UNIQUE,
-    `book_description` TEXT,
-    `book_pages` INT,
-    `book_language` VARCHAR(50),
-    `book_category` VARCHAR(80),
-    `book_cover_url` VARCHAR(255),
-    `book_created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
 
+CREATE TABLE books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    book_title VARCHAR(500) NOT NULL,
+    book_author VARCHAR(255) NOT NULL,
+    book_isbn VARCHAR(30) UNIQUE,
+    book_description TEXT,
+    book_pages INT,
+    book_language VARCHAR(50),
+    book_category VARCHAR(255),
+    book_cover_url VARCHAR(500),
+    book_created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 CREATE TABLE IF NOT EXISTS `library` (
     `library_id` INT AUTO_INCREMENT PRIMARY KEY,
     `library_user_id` INT NOT NULL,
@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `library` (
     `library_ownership` ENUM(
         'propio',
         'prestado',
-        'biblioteca',
         'no_lo_tengo'
     ) DEFAULT 'propio',
 
