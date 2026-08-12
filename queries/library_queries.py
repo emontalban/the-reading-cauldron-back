@@ -60,6 +60,14 @@ def add_book_to_library(user_id, data):
         return None
 
     cursor = con.cursor()
+    book_id = data.get("library_book_id")
+
+    existing_library_book = get_existing_library_book(user_id, book_id)
+
+    if existing_library_book:
+        cursor.close()
+        con.close()
+        return "duplicate"
 
     sql = """
         INSERT INTO library (
@@ -216,3 +224,28 @@ def delete_library(library_id, user_id):
     return delete_rows >0
 
 
+def get_existing_library_book(user_id, book_id):
+    con = get_db_connection()
+
+    if con is None:
+        return None
+
+    cursor = con.cursor(dictionary=True)
+
+    sql = """
+        SELECT
+            library_id,
+            user_id,
+            book_id
+        FROM library
+        WHERE user_id = %s AND book_id = %s
+    """
+
+    cursor.execute(sql, (user_id, book_id))
+
+    library_book = cursor.fetchone()
+
+    cursor.close()
+    con.close()
+
+    return library_book

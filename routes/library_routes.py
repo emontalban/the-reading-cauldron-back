@@ -57,7 +57,7 @@ def register_library_routes(app):
         if library_id == "duplicate":
             return jsonify({
                 "status": "error",
-                "message": "Este libro ya está en tu biblioteca con ese formato"
+                "message": "Este libro ya está en tu biblioteca"
             }), 409
         
         if library_id is None:
