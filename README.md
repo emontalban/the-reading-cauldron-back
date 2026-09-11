@@ -1,14 +1,14 @@
-# The Reading Cauldron - Backend
+# The Reading Cauldron
 
-Backend de **The Reading Cauldron**, una aplicación full stack de biblioteca personal.
+The Reading Cauldron back, Es el backend de una aplicación full stack de biblioteca personal.
 
-Este backend estará desarrollado con **Python Flask** y se encargará de gestionar la API, la conexión con la base de datos MySQL, la autenticación de usuarios y las operaciones CRUD para los libros.
+Este backend estará desarrollado con **Python Flask** y se encarga de gestionar la API, la conexión con la base de datos MySQL, la autenticación de usuarios y las operaciones de CRUD para los libros.
 
 ## Descripción del proyecto
 
 The Reading Cauldron es una aplicación web donde cada usuario puede crear y gestionar su propia biblioteca personal.
 
-El usuario podrá añadir libros, editarlos, eliminarlos, marcar su estado de lectura y guardar notas personales.
+El usuario podrá añadir libros, editarlos, eliminarlos, marcar su estado de lectura y guardar notas personales y asi llevar un registro de todos sus libros en una biblioteca privada.
 
 ## Tecnologías utilizadas
 
@@ -16,14 +16,13 @@ El usuario podrá añadir libros, editarlos, eliminarlos, marcar su estado de le
 * Flask
 * Flask-CORS
 * MySQL
-* PyJWT
 * REST API
 * Git
 * GitHub
 ## Estructura del proyecto
 
 ```text
-the-reading-cauldron-backend/
+the-reading-cauldron-back/
 │
 ├── app.py
 ├── README.md
@@ -53,12 +52,11 @@ the-reading-cauldron-backend/
 │   └── library_queries.py
 │
 ├── helpers/
-│   ├── __init__.py
-│   ├── auth_helpers.py
-│   └── library_validations.py
-│
-└── docs/
-    └── API.md
+    ├── __init__.py
+    ├── auth_helpers.py
+    └── library_validations.py
+
+
 ```
 ## Funcionalidades principales del backend
 
@@ -67,7 +65,6 @@ the-reading-cauldron-backend/
 * Login con JWT
 * Inicio de sesión
 * CRUD de libros
-* CRUD de biblioteca personal
 * Validaciones para los datos de la biblioteca
 
 ## Base de datos
@@ -86,45 +83,36 @@ La tabla `library` conecta usuarios con libros y guarda información personal de
 
 ## Instalación
 
-Clonar el repositorio:
+- Clonar el repositorio
+- Entrar en la carpeta del proyecto
 
-```bash
-git clone https://github.com/emontalban/the-reading-cauldron-back
-```
+- Crear el entorno virtual:
 
-Entrar en la carpeta del proyecto:
+    ```bash
+    py -m venv venv
+    ```
 
-```bash
-cd the-reading-cauldron-backend
-```
+- Activar el entorno virtual en Windows:
 
-Crear el entorno virtual:
+    ```bash
+    .\venv\Scripts\activate
+    ```
 
-```bash
-py -m venv venv
-```
+- Instalar dependencias:
 
-Activar el entorno virtual en Windows:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-```bash
-.\venv\Scripts\activate
-```
+- Ejecutar el servidor
 
-Instalar dependencias:
+    ```bash
+    python app.py
+    ```
 
-```bash
-pip install -r requirements.txt
-```
+- El servidor se ejecutará en:
 
-## Ejecutar el servidor
-
-```bash
-python app.py
-```
-
-El servidor se ejecutará en:
-
-```txt
-http://127.0.0.1:5000
-```
+    ```txt
+    http://127.0.0.1:5000
+    ```
 
