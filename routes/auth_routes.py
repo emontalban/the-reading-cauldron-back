@@ -44,12 +44,12 @@ def register_auth_routes(app):
                 "message": "Email o contraseña incorrectos"
             }), 401
         
-        #Este token sera valido durante dos horas
+        #Este token sera valido durante dos dias
         payload = {
             "user_id": user["user_id"],
             "user_name": user["user_name"],
             "user_email": user["user_email"],
-            "exp": datetime.now(timezone.utc) + timedelta(hours=2)
+            "exp": datetime.now(timezone.utc) + timedelta(days=2)
         }
 
         token = jwt.encode(
