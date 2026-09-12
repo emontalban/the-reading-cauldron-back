@@ -1,8 +1,13 @@
-CREATE SCHEMA IF NOT EXISTS `the_reading_cauldron_db`
-DEFAULT CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
+-- Crear en la base local
+-- CREATE SCHEMA IF NOT EXISTS `the_reading_cauldron_db`
+-- DEFAULT CHARACTER SET utf8mb4
+-- COLLATE utf8mb4_unicode_ci;
 
-USE `the_reading_cauldron_db`;
+-- USE `the_reading_cauldron_db`;
+
+DROP TABLE IF EXISTS `library`;
+DROP TABLE IF EXISTS `books`;
+DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE IF NOT EXISTS `users` (
     `user_id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 );
 
 
-CREATE TABLE books (
+CREATE TABLE IF NOT EXISTS books (
     book_id INT AUTO_INCREMENT PRIMARY KEY,
     book_title VARCHAR(500) NOT NULL,
     book_author VARCHAR(255) NOT NULL,
@@ -75,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `library` (
             `library_user_id`,
             `library_book_id`,
             `library_format`
-        ),
+        )
 
 );
 
